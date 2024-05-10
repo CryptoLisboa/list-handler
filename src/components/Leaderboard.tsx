@@ -16,6 +16,7 @@ import { User } from "../types";
 import { fetchLeaderboard } from "../services/api";
 import { useNavigation } from "@react-navigation/native";
 import { UserDetailScreenNavigationProp } from "../types/navigation";
+import { UserList } from "./UserList";
 
 export const Leaderboard: React.FC = () => {
     const navigation = useNavigation<UserDetailScreenNavigationProp>();
@@ -74,7 +75,8 @@ export const Leaderboard: React.FC = () => {
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
-                <FlatList data={displayedUsers} keyExtractor={(item) => item._id} renderItem={renderItem} />
+                <UserList data={displayedUsers} navigation={navigation} />
+                // <FlatList data={displayedUsers} keyExtractor={(item) => item._id} renderItem={renderItem} />
             )}
             {error && <Text>Error: {error.message}</Text>}
         </View>

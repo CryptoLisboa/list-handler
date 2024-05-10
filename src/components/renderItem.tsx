@@ -1,4 +1,4 @@
-// src/components/Leaderboard2.tsx
+// src/components/renderItem.tsx
 import React from "react";
 import { View, Text, Image, ListRenderItemInfo } from "react-native";
 import { User } from "../types";

@@ -1,7 +1,7 @@
 // src/components/Leaderboard.tsx
-import React from "react";
-import { Text, Image, FlatList, ListRenderItemInfo, TouchableOpacity } from "react-native";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { Text, Image, FlatList, ListRenderItemInfo, TouchableOpacity, View, TextInput, Button } from "react-native";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "../types";
 import { fetchLeaderboard } from "../services/api";
 import { useNavigation } from "@react-navigation/native";
@@ -9,13 +9,15 @@ import { UserDetailScreenNavigationProp } from "../types/navigation"; // Adjust 
 
 export const Leaderboard: React.FC = () => {
     const navigation = useNavigation<UserDetailScreenNavigationProp>();
+    const queryClient = useQueryClient();
+    const [searchUsername, setSearchUsername] = useState<string>("");
     const {
         data: users,
         isLoading,
         error,
     } = useQuery<User[], Error>({
-        queryKey: ["leaderboard"],
-        queryFn: fetchLeaderboard,
+        queryKey: ["leaderboard", searchUsername],
+        queryFn: () => fetchLeaderboard(searchUsername),
     });
 
     if (isLoading) {
@@ -24,6 +26,10 @@ export const Leaderboard: React.FC = () => {
     if (error) {
         return <Text>Error: {error.message}</Text>;
     }
+
+    const handleSearch = () => {
+        queryClient.invalidateQueries({ queryKey: ["leaderboard", searchUsername] });
+    };
 
     const renderItem = ({ item, index }: ListRenderItemInfo<User>) => {
         return (
@@ -39,5 +45,18 @@ export const Leaderboard: React.FC = () => {
         );
     };
 
-    return <FlatList data={users} keyExtractor={(item) => item._id} renderItem={renderItem} />;
+    return (
+        <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: "row", padding: 10 }}>
+                <TextInput
+                    placeholder="Search by username"
+                    value={searchUsername}
+                    onChangeText={setSearchUsername}
+                    style={{ flex: 1, marginRight: 10, borderWidth: 1, borderColor: "gray", padding: 10 }}
+                />
+                <Button title="Search" onPress={handleSearch} />
+            </View>
+            <FlatList data={users} keyExtractor={(item) => item._id} renderItem={renderItem} />
+        </View>
+    );
 };

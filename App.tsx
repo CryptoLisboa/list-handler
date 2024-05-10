@@ -1,14 +1,26 @@
+// App.tsx
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
-import { List } from "./List";
+import { queryClient } from "./src/services/QueryClient";
+import { Leaderboard } from "./src/components/Leaderboard";
 
-// App Component
 export default function App() {
     return (
-        <View style={{ height: Dimensions.get("window").height, width: Dimensions.get("window").width }}>
-            <List />
+        <QueryClientProvider client={queryClient}>
+            <View style={styles.container}>
+                <Leaderboard />
+            </View>
             <StatusBar style="auto" />
-        </View>
+        </QueryClientProvider>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+});

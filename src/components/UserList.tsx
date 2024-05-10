@@ -1,6 +1,7 @@
-// src/components/Leaderboard.tsx
+// src/components/UserList.tsx
 import React from "react";
-import { Text, Image, FlatList, ListRenderItemInfo, TouchableOpacity } from "react-native";
+import { Text, Image, TouchableOpacity } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { User } from "../types";
 import { UserDetailScreenNavigationProp } from "../types/navigation";
 
@@ -10,7 +11,7 @@ type UserListProps = {
 };
 
 export const UserList: React.FC<UserListProps> = ({ data, navigation }) => {
-    const renderItem = ({ item, index }: ListRenderItemInfo<User>) => {
+    const renderItem = ({ item, index }: { item: User; index: number }) => {
         return (
             <TouchableOpacity
                 style={{ flexDirection: "row", padding: 10, alignItems: "center" }}
@@ -24,5 +25,12 @@ export const UserList: React.FC<UserListProps> = ({ data, navigation }) => {
         );
     };
 
-    return <FlatList data={data} keyExtractor={(item) => item._id} renderItem={renderItem} />;
+    return (
+        <FlashList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item._id}
+            estimatedItemSize={80} // Adjust this size based on your typical item height
+        />
+    );
 };

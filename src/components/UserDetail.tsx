@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
+// import { StackScreenProps } from "@react-navigation/stack";
 
-// define the types for the navigation stack parameters
 type RootStackParamList = {
-    UserDetail: {
-        username: string;
-    };
-};
-
-type UserDetailScreenRouteProp = RouteProp<RootStackParamList, "UserDetail">;
-
-type UserDetailProps = {
-    route: UserDetailScreenRouteProp;
+    Leaderboard: undefined;
+    UserDetail: { username: string };
 };
 
 type UserDetails = {
@@ -20,10 +13,13 @@ type UserDetails = {
     membership: {
         tier: string;
     };
-    [key: string]: any; // for any additional dynamic fields
+    [key: string]: any;
 };
 
-export const UserDetail = ({ route }: UserDetailProps) => {
+// Use the navigation hooks for better typing and integration with function components
+export const UserDetail: FunctionComponent = () => {
+    const route = useRoute<RouteProp<RootStackParamList, "UserDetail">>();
+    // const navigation = useNavigation();
     const { username } = route.params;
     const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -50,7 +46,7 @@ export const UserDetail = ({ route }: UserDetailProps) => {
         <View style={{ padding: 20 }}>
             <Text>Username: {userDetails?.username}</Text>
             <Text>Membership Tier: {userDetails?.membership.tier}</Text>
-            // Add more fields as needed
+            {/* // Add more fields as needed */}
         </View>
     );
 };

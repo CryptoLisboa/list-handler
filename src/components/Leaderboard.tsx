@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {
     Text,
     Image,
-    FlatList,
     ListRenderItemInfo,
     TouchableOpacity,
     View,

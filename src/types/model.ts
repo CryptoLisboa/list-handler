@@ -44,7 +44,6 @@ export interface User {
     points: number;
 }
 
-export interface ApiResponse {
-    success: boolean;
-    response: User[];
+export interface UserDetails extends User {
+    key: string;
 }

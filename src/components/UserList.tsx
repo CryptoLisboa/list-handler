@@ -2,8 +2,8 @@
 import React from "react";
 import { Text, Image, TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
-import { User } from "../types";
 import { UserDetailScreenNavigationProp } from "../types/navigation";
+import { User } from "../types/model";
 
 type UserListProps = {
     data: User[];
@@ -30,7 +30,7 @@ export const UserList: React.FC<UserListProps> = ({ data, navigation }) => {
             data={data}
             renderItem={renderItem}
             keyExtractor={(item) => item._id}
-            estimatedItemSize={80} // Adjust this size based on your typical item height
+            estimatedItemSize={80} // Adjust dynamically based on item height for given the device
         />
     );
 };

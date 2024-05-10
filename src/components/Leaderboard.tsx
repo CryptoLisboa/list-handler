@@ -1,20 +1,11 @@
 // src/components/Leaderboard.tsx
 import React, { useState, useEffect } from "react";
-import {
-    Text,
-    Image,
-    ListRenderItemInfo,
-    TouchableOpacity,
-    View,
-    TextInput,
-    Button,
-    ActivityIndicator,
-} from "react-native";
+import { Text, View, TextInput, Button, ActivityIndicator } from "react-native";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { User } from "../types";
 import { fetchLeaderboard } from "../services/api";
 import { useNavigation } from "@react-navigation/native";
 import { UserDetailScreenNavigationProp } from "../types/navigation";
+import { User } from "../types/model";
 import { UserList } from "./UserList";
 
 export const Leaderboard: React.FC = () => {
@@ -46,20 +37,6 @@ export const Leaderboard: React.FC = () => {
         queryClient.invalidateQueries({ queryKey: ["leaderboard", searchUsername] });
     };
 
-    const renderItem = ({ item, index }: ListRenderItemInfo<User>) => {
-        return (
-            <TouchableOpacity
-                style={{ flexDirection: "row", padding: 10, alignItems: "center" }}
-                onPress={() => navigation.navigate("UserDetail", { username: item.username })}
-            >
-                <Image source={{ uri: item.picture }} style={{ width: 50, height: 50, borderRadius: 25 }} />
-                <Text style={{ marginLeft: 10 }}>
-                    #{index + 1} - {item.username}
-                </Text>
-            </TouchableOpacity>
-        );
-    };
-
     return (
         <View style={{ flex: 1 }}>
             <View style={{ flexDirection: "row", padding: 10 }}>
@@ -71,12 +48,7 @@ export const Leaderboard: React.FC = () => {
                 />
                 <Button title="Search" onPress={handleSearch} />
             </View>
-            {isLoading ? (
-                <ActivityIndicator />
-            ) : (
-                <UserList data={displayedUsers} navigation={navigation} />
-                // <FlatList data={displayedUsers} keyExtractor={(item) => item._id} renderItem={renderItem} />
-            )}
+            {isLoading ? <ActivityIndicator /> : <UserList data={displayedUsers} navigation={navigation} />}
             {error && <Text>Error: {error.message}</Text>}
         </View>
     );

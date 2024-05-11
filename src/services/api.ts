@@ -1,6 +1,8 @@
 // src/services/api.ts
 import axios from "axios";
-import { ApiResponse, User } from "../types";
+import { ApiResponse } from "../types/api";
+import { User } from "../types/model";
+// import { ApiResponse, User } from "../types";
 
 // Modify the function to accept an optional username parameter
 export const fetchLeaderboard = async (username: string = ""): Promise<User[]> => {
@@ -15,6 +17,6 @@ export const fetchLeaderboard = async (username: string = ""): Promise<User[]> =
 
         return users;
     } else {
-        throw new Error(response.data.message || "Fetching data failed");
+        throw new Error(response.data.error || "Fetching data failed");
     }
 };

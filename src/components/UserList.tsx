@@ -19,7 +19,7 @@ export const UserList: React.FC<UserListProps> = ({ data, navigation }) => {
             >
                 <Image source={{ uri: item.picture }} style={{ width: 50, height: 50, borderRadius: 25 }} />
                 <Text style={{ marginLeft: 10 }}>
-                    #{index + 1} - {item.username}
+                    #{index + 1} - {item.username} - points: {item.points}
                 </Text>
             </TouchableOpacity>
         );
